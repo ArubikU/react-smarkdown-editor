@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react-smarkdown-editor/static/css/main.d3710f19.css",
-    "main.js": "/react-smarkdown-editor/static/js/main.6a8efe75.js",
+    "main.css": "/react-smarkdown-editor/static/css/main.8a0bdb2c.css",
+    "main.js": "/react-smarkdown-editor/static/js/main.9e81a450.js",
     "static/js/8053.537ef39c.chunk.js": "/react-smarkdown-editor/static/js/8053.537ef39c.chunk.js",
     "static/js/8457.640c14d5.chunk.js": "/react-smarkdown-editor/static/js/8457.640c14d5.chunk.js",
     "static/js/2284.f5908379.chunk.js": "/react-smarkdown-editor/static/js/2284.f5908379.chunk.js",
@@ -268,8 +268,8 @@
     "static/js/1988.0b166b2c.chunk.js": "/react-smarkdown-editor/static/js/1988.0b166b2c.chunk.js",
     "static/js/9141.267dd3cf.chunk.js": "/react-smarkdown-editor/static/js/9141.267dd3cf.chunk.js",
     "index.html": "/react-smarkdown-editor/index.html",
-    "main.d3710f19.css.map": "/react-smarkdown-editor/static/css/main.d3710f19.css.map",
-    "main.6a8efe75.js.map": "/react-smarkdown-editor/static/js/main.6a8efe75.js.map",
+    "main.8a0bdb2c.css.map": "/react-smarkdown-editor/static/css/main.8a0bdb2c.css.map",
+    "main.9e81a450.js.map": "/react-smarkdown-editor/static/js/main.9e81a450.js.map",
     "8053.537ef39c.chunk.js.map": "/react-smarkdown-editor/static/js/8053.537ef39c.chunk.js.map",
     "8457.640c14d5.chunk.js.map": "/react-smarkdown-editor/static/js/8457.640c14d5.chunk.js.map",
     "2284.f5908379.chunk.js.map": "/react-smarkdown-editor/static/js/2284.f5908379.chunk.js.map",
@@ -537,7 +537,7 @@
     "9141.267dd3cf.chunk.js.map": "/react-smarkdown-editor/static/js/9141.267dd3cf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d3710f19.css",
-    "static/js/main.6a8efe75.js"
+    "static/css/main.8a0bdb2c.css",
+    "static/js/main.9e81a450.js"
   ]
 }
