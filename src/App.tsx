@@ -13,7 +13,6 @@ export default function MarkdownEditor() {
   const [markdown, setMarkdown] = useState('')
   const [shareUrl, setShareUrl] = useState('')
 
-
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export default function MarkdownEditor() {
       localStorage.removeItem("redirectedPath");
     } else {
       // Default navigation if no redirected path is found
-      navigate('/contentshowup/');
+      navigate('/react-smarkdown-editor/');
     }
   }, []);
 
@@ -65,6 +64,40 @@ export default function MarkdownEditor() {
     navigator.clipboard.writeText(shareUrl)
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.ctrlKey && e.key === 'b') {
+      e.preventDefault()
+      wrapSelectionWith('**') // Bold
+    }
+    if (e.ctrlKey && e.key === 'i') {
+      e.preventDefault()
+      wrapSelectionWith('*') // Italic
+    }
+    if (e.ctrlKey && e.key === 'h') {
+      e.preventDefault()
+      wrapSelectionWith('# ') // Heading
+    }
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+      e.preventDefault()
+      wrapSelectionWith('```\n', '\n```') // Code Block
+    }
+  }
+
+  const wrapSelectionWith = (prefix: string, suffix: string = prefix) => {
+    const textarea = document.querySelector('textarea')
+    if (!textarea) return
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const selectedText = markdown.substring(start, end)
+    const newText = markdown.substring(0, start) + prefix + selectedText + suffix + markdown.substring(end)
+    setMarkdown(newText)
+    // Restore the selection to include the formatting
+    setTimeout(() => {
+      textarea.selectionStart = start + prefix.length
+      textarea.selectionEnd = end + prefix.length
+    }, 0)
+  }
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col space-y-4">
@@ -96,6 +129,7 @@ export default function MarkdownEditor() {
             <Textarea
               value={markdown}
               onChange={handleMarkdownChange}
+              onKeyDown={handleKeyDown} // Capture keyboard shortcuts
               placeholder="Enter your Markdown here..."
               className="w-full h-[calc(100vh-200px)] resize-none"
             />
@@ -103,9 +137,7 @@ export default function MarkdownEditor() {
           <Card className="p-4">
             <div
               className="prose max-w-none h-[calc(100vh-200px)] overflow-auto text-sm overflow-auto bg-white dark:bg-neutral-900"
-              
             >
-              
               <SimpleMarkdown content={markdown}></SimpleMarkdown>
             </div>
           </Card>
