@@ -63,6 +63,7 @@ The Markdown Editor Web App allows you to type Markdown text in the editor pane 
 - **Bold**: `Ctrl + B`
 - **Italic**: `Ctrl + I`
 - **Heading**: `Ctrl + H`
+- **Underline**: `Ctrl + Shift + S`
 - **Code Block**: `Ctrl + Shift + C`
 
 ## Customization

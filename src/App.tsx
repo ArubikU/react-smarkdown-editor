@@ -4,6 +4,8 @@ import { SimpleMarkdown } from "@arubiku/react-markdown"
 import { Copy, Share2, Upload } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
+import 'trapnz-lz-string'
+import { compressToBase64, decompressFromBase64 } from "trapnz-lz-string"
 import { Button } from "./components/ui/button"
 import { Card } from "./components/ui/card"
 import { Input } from "./components/ui/input"
@@ -34,7 +36,7 @@ export default function MarkdownEditor() {
     const url = window.location.href;
     const encodedContent = url.split('/react-smarkdown-editor/')[1];
     if (encodedContent) {
-      const decodedContent = atob(decodeURIComponent(encodedContent))
+      const decodedContent = decompressFromBase64(encodedContent)
       setMarkdown(decodedContent)
     }
   }, [])
@@ -56,7 +58,7 @@ export default function MarkdownEditor() {
   }
 
   const handleShare = () => {
-    const encodedContent = encodeURIComponent(btoa(markdown))
+    const encodedContent = compressToBase64(markdown)
     const url = `${window.location.origin}${window.location.pathname}${encodedContent}`
     setShareUrl(url)
   }
@@ -76,7 +78,11 @@ export default function MarkdownEditor() {
     }
     if (e.ctrlKey && e.key === 'h') {
       e.preventDefault()
-      wrapSelectionWith('# ') // Heading
+      addPrefix('# ') // Heading
+    }
+    if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+      e.preventDefault()
+      wrapSelectionWith('__', '__') // Code Block
     }
     if (e.ctrlKey && e.shiftKey && e.key === 'C') {
       e.preventDefault()
@@ -98,6 +104,36 @@ export default function MarkdownEditor() {
       textarea.selectionEnd = end + prefix.length
     }, 0)
   }
+  const addPrefix = (prefix: string) => {
+    const textarea = document.querySelector('textarea')
+    if (!textarea) return
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const selectedText = markdown.substring(start, end)
+    const newText = markdown.substring(0, start) + prefix + selectedText + markdown.substring(end)
+    setMarkdown(newText)
+    // Restore the selection to include the formatting
+    setTimeout(() => {
+      textarea.selectionStart = start + prefix.length
+      textarea.selectionEnd = end + prefix.length
+    }, 0)
+  }
+
+  const addSuffix = (suffix: string) => {
+    const textarea = document.querySelector('textarea')
+    if (!textarea) return
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const selectedText = markdown.substring(start, end)
+    const newText = markdown.substring(0, start) + selectedText + suffix + markdown.substring(end)
+    setMarkdown(newText)
+    // Restore the selection to include the formatting
+    setTimeout(() => {
+      textarea.selectionStart = start + suffix.length
+      textarea.selectionEnd = end + suffix.length
+    }, 0)
+  }
+
 
   return (
     <div className="container mx-auto p-4">
@@ -135,9 +171,9 @@ export default function MarkdownEditor() {
               className="w-full h-[calc(100vh-200px)] resize-none"
             />
           </Card>
-          <Card className="p-4">
+          <Card className="p-4  rounded-lg overflow-hidden">
             <div
-              className="prose max-w-none h-[calc(100vh-200px)] overflow-auto text-sm overflow-auto bg-white dark:bg-neutral-900"
+              className="font-mono text-sm overflow-auto bg-white dark:bg-neutral-900"
             >
               <SimpleMarkdown content={markdown}></SimpleMarkdown>
             </div>
