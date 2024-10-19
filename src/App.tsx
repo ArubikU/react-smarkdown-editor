@@ -30,8 +30,9 @@ export default function MarkdownEditor() {
   }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const encodedContent = params.get('content')
+    //params is the part after /react-smarkdown-editor/ in the URL
+    const url = window.location.href;
+    const encodedContent = url.split('/react-smarkdown-editor/')[1];
     if (encodedContent) {
       const decodedContent = atob(decodeURIComponent(encodedContent))
       setMarkdown(decodedContent)
@@ -56,7 +57,7 @@ export default function MarkdownEditor() {
 
   const handleShare = () => {
     const encodedContent = encodeURIComponent(btoa(markdown))
-    const url = `${window.location.origin}${window.location.pathname}?content=${encodedContent}`
+    const url = `${window.location.origin}${window.location.pathname}${encodedContent}`
     setShareUrl(url)
   }
 
