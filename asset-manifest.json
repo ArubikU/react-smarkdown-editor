@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-smarkdown-editor/static/css/main.d3710f19.css",
-    "main.js": "/react-smarkdown-editor/static/js/main.506dd507.js",
+    "main.js": "/react-smarkdown-editor/static/js/main.bdec2fcb.js",
     "static/js/8053.537ef39c.chunk.js": "/react-smarkdown-editor/static/js/8053.537ef39c.chunk.js",
     "static/js/8457.640c14d5.chunk.js": "/react-smarkdown-editor/static/js/8457.640c14d5.chunk.js",
     "static/js/2284.f5908379.chunk.js": "/react-smarkdown-editor/static/js/2284.f5908379.chunk.js",
@@ -269,7 +269,7 @@
     "static/js/9141.267dd3cf.chunk.js": "/react-smarkdown-editor/static/js/9141.267dd3cf.chunk.js",
     "index.html": "/react-smarkdown-editor/index.html",
     "main.d3710f19.css.map": "/react-smarkdown-editor/static/css/main.d3710f19.css.map",
-    "main.506dd507.js.map": "/react-smarkdown-editor/static/js/main.506dd507.js.map",
+    "main.bdec2fcb.js.map": "/react-smarkdown-editor/static/js/main.bdec2fcb.js.map",
     "8053.537ef39c.chunk.js.map": "/react-smarkdown-editor/static/js/8053.537ef39c.chunk.js.map",
     "8457.640c14d5.chunk.js.map": "/react-smarkdown-editor/static/js/8457.640c14d5.chunk.js.map",
     "2284.f5908379.chunk.js.map": "/react-smarkdown-editor/static/js/2284.f5908379.chunk.js.map",
@@ -538,6 +538,6 @@
   },
   "entrypoints": [
     "static/css/main.d3710f19.css",
-    "static/js/main.506dd507.js"
+    "static/js/main.bdec2fcb.js"
   ]
 }
