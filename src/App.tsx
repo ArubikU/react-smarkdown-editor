@@ -1,7 +1,7 @@
 'use client'
 
 import { SimpleMarkdown } from "@arubiku/react-markdown"
-import { Copy, Share2, Upload } from 'lucide-react'
+import { Copy, Globe2, Share2, Upload } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import 'trapnz-lz-string'
@@ -14,6 +14,8 @@ import { Textarea } from "./components/ui/textarea"
 export default function MarkdownEditor() {
   const [markdown, setMarkdown] = useState('')
   const [shareUrl, setShareUrl] = useState('')
+  const [isRenderOnly, setIsRenderOnly] = useState(false)
+
 
   const navigate = useNavigate()
 
@@ -31,13 +33,36 @@ export default function MarkdownEditor() {
     }
   }, []);
 
+
   useEffect(() => {
-    //params is the part after /react-smarkdown-editor/ in the URL
     const url = window.location.href;
-    const encodedContent = url.split('/react-smarkdown-editor/')[1];
-    if (encodedContent) {
-      const decodedContent = decompressFromBase64(encodedContent)
-      setMarkdown(decodedContent)
+    const pathParts = url.split('/react-smarkdown-editor/');
+    const isRenderPath = pathParts[1]?.startsWith('render/');
+    
+    if (isRenderPath) {
+      const encodedContent = pathParts[1].replace('render/', '');
+      const decodedContent = decompressFromBase64(encodedContent);
+      setMarkdown(decodedContent || '');
+      setIsRenderOnly(true);
+    } else {
+      // Handle normal /react-smarkdown-editor/<encoding> path
+      const encodedContent = pathParts[1];
+      if (encodedContent) {
+        const decodedContent = decompressFromBase64(encodedContent);
+        setMarkdown(decodedContent || '');
+      }
+    }
+  }, [])
+
+  
+  useEffect(() => {
+    localStorage.setItem("markdownContent", markdown)
+  }, [markdown])
+  
+  useEffect(() => {
+    const savedMarkdown = localStorage.getItem("markdownContent")
+    if (savedMarkdown) {
+      setMarkdown(savedMarkdown) 
     }
   }, [])
 
@@ -60,6 +85,11 @@ export default function MarkdownEditor() {
   const handleShare = () => {
     const encodedContent = compressToBase64(markdown)
     const url = `${window.location.origin}${window.location.pathname}${encodedContent}`
+    setShareUrl(url)
+  }
+  const handleShareRender = () => {
+    const encodedContent = compressToBase64(markdown)
+    const url = `${window.location.origin}${window.location.pathname}render/${encodedContent}`
     setShareUrl(url)
   }
 
@@ -135,6 +165,16 @@ export default function MarkdownEditor() {
   }
 
 
+  if (isRenderOnly) {
+    // Render-only mode
+    return (
+      <div className="container mx-auto">
+        <div className="font-mono text-sm overflow-auto bg-white dark:bg-neutral-900 p-4 rounded-lg">
+          <SimpleMarkdown content={markdown} />
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col space-y-4">
@@ -151,6 +191,9 @@ export default function MarkdownEditor() {
           </Button>
           <Button onClick={handleShare}>
             <Share2 className="mr-2 h-4 w-4" /> Share
+          </Button>
+          <Button onClick={handleShareRender}>
+            <Globe2 className="mr-2 h-4 w-4" /> Render share
           </Button>
         </div>
         {shareUrl && (
