@@ -1,10 +1,10 @@
 import { HighlighterProvider } from '@arubiku/react-markdown';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App, { ThemeProvider } from './App';
 import './index.css';
-const RouterType = process.env.HASH_ROUTER === 'true' ? HashRouter : BrowserRouter
+const RouterType = BrowserRouter;
 
 ReactDOM.render(
   <ThemeProvider>
