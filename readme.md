@@ -65,6 +65,11 @@ The Markdown Editor Web App allows you to type Markdown text in the editor pane 
 - **Heading**: `Ctrl + H`
 - **Underline**: `Ctrl + Shift + S`
 - **Code Block**: `Ctrl + Shift + C`
+- **Superscript**: Ctrl + `
+- **Subscript**: `Ctrl + ~`
+- **Highlight**: `Ctrl + =`
+- **Emoji Shortcode**: `Ctrl + q`
+
 
 ## Customization
 
