@@ -1,7 +1,7 @@
 'use client'
 
 import { SimpleMarkdown } from "@arubiku/react-markdown"
-import { ChevronDown, ChevronUp, Copy, Globe2, Moon, Share2, Sun, Upload } from 'lucide-react'
+import { ChevronDown, ChevronUp, Copy, Download, Globe2, Moon, Share2, Sun, Upload } from 'lucide-react'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import 'trapnz-lz-string'
@@ -20,6 +20,47 @@ type ThemeContextType = {
   toggleTheme: () => void
 }
 
+interface SimpleMarkdownWithDownloadProps {
+  content: string;
+  fileName?: string;
+  // Include all other props from SimpleMarkdown
+  className?: string;
+  ctexTclass?: string;
+  imageHeight?: number;
+  theme?: 'light' | 'dark';
+  codeBlockTheme?: string;
+  tableHeaderClass?: string;
+  tableCellClass?: string;
+  extraAlerts?: any[]; // You might want to define a more specific type for extraAlerts
+}
+
+ function SimpleMarkdownWithDownload({
+  content,
+  fileName = 'document.md',
+  ...rest
+}: SimpleMarkdownWithDownloadProps) {
+  const handleDownload = () => {
+    const blob = new Blob([content], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+      <Button 
+        onClick={handleDownload}
+        variant="ghost"
+        size="icon"
+      >
+        <Download className="h-5 w-5" />
+      </Button>
+  );
+}
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -323,8 +364,12 @@ export default function MarkdownEditor() {
       <div className="container mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Markdown Render</h1>
+        <div>
+        <SimpleMarkdownWithDownload content={markdown} theme={theme}/>
         <ThemeToggle />
+        </div>
       </div>
+      
         <div className="font-mono text-sm overflow-auto p-4 rounded-lg">
           <SimpleMarkdown content={markdown}  theme={theme}/>
         </div>
