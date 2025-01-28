@@ -6,10 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tailwind": "npx tailwindcss -i ./styles/template.css -o ./styles/globals.css --watch --purge-cache"
   },
   "dependencies": {
-    "@arubiku/react-markdown": "^1.5.6",
+    "@arubiku/react-markdown": "^1.5.7",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.4",
