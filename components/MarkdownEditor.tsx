@@ -324,7 +324,7 @@ export default function MarkdownEditor() {
   const handleRemoveTag = (tag: string) => {
     setTags(tags.filter((t) => t !== tag))
   }
-  const ENABLE_FEATURES = true
+  const ENABLE_FEATURES = false
   const getExtra = () =>{
     if(!ENABLE_FEATURES) return (<></>)
     return (<><div className="flex space-x-2">
