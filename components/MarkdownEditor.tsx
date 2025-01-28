@@ -324,6 +324,46 @@ export default function MarkdownEditor() {
   const handleRemoveTag = (tag: string) => {
     setTags(tags.filter((t) => t !== tag))
   }
+  const ENABLE_FEATURES = true
+  const getExtra = () =>{
+    if(!ENABLE_FEATURES) return (<></>)
+    return (<><div className="flex space-x-2">
+      <Input
+        type="text"
+        placeholder="Add a tag"
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            handleAddTag(e.currentTarget.value)
+            e.currentTarget.value = ""
+          }
+        }}
+      />
+      <Input
+        type="file"
+        accept="image/*"
+        onChange={handlePreviewImageChange}
+        className="hidden"
+        id="preview-image-upload"
+      />
+      <Button onClick={() => document.getElementById("preview-image-upload")?.click()}>
+        <Upload className="mr-2 h-4 w-4" /> Upload Preview Image
+      </Button>
+    </div>
+    <div className="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <span
+          key={tag}
+          className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+        >
+          {tag}
+          <button onClick={() => handleRemoveTag(tag)} className="ml-2 text-xs">
+            &times;
+          </button>
+        </span>
+      ))}
+    </div></>)
+  }
+
 
   const handlePreviewImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -408,41 +448,7 @@ export default function MarkdownEditor() {
                   <Download className="mr-2 h-4 w-4" /> Load from Cloud
                 </Button>
               </div>
-              <div className="flex space-x-2">
-                <Input
-                  type="text"
-                  placeholder="Add a tag"
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleAddTag(e.currentTarget.value)
-                      e.currentTarget.value = ""
-                    }
-                  }}
-                />
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePreviewImageChange}
-                  className="hidden"
-                  id="preview-image-upload"
-                />
-                <Button onClick={() => document.getElementById("preview-image-upload")?.click()}>
-                  <Upload className="mr-2 h-4 w-4" /> Upload Preview Image
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-                  >
-                    {tag}
-                    <button onClick={() => handleRemoveTag(tag)} className="ml-2 text-xs">
-                      &times;
-                    </button>
-                  </span>
-                ))}
-              </div>
+              {getExtra()}
               {shareUrl && (
                 <div className="flex items-center space-x-2">
                   <Input value={shareUrl} readOnly />
