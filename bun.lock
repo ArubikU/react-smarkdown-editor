@@ -4,7 +4,7 @@
     "": {
       "name": "my-v0-project",
       "dependencies": {
-        "@arubiku/react-markdown": "^1.5.7",
+        "@arubiku/react-markdown": "^1.5.8",
         "@hookform/resolvers": "^3.9.1",
         "@radix-ui/react-accordion": "^1.2.2",
         "@radix-ui/react-alert-dialog": "^1.1.4",
@@ -73,7 +73,7 @@
   "packages": {
     "@alloc/quick-lru": ["@alloc/quick-lru@5.2.0", "", {}, "sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw=="],
 
-    "@arubiku/react-markdown": ["@arubiku/react-markdown@1.5.7", "", { "dependencies": { "@arubiku/react-markdown": "file:", "shiki": "^1.22.0", "tailwind-merge": "^2.5.3" }, "peerDependencies": { "react": "^18" } }, "sha512-hi9WgvEUDpabnUo7eMneHbiEfHKs4y/+LY8fm3taOX6Q7chsc3Ffkf+YNEQxeDXjKA9o2bU8SMzB/ARQlsQchg=="],
+    "@arubiku/react-markdown": ["@arubiku/react-markdown@1.5.8", "", { "dependencies": { "@arubiku/react-markdown": "file:", "shiki": "^1.22.0", "tailwind-merge": "^2.5.3" }, "peerDependencies": { "react": "^18" } }, "sha512-BqmiR8vWjTP7Kyn2fyZ1fRjvV0dN5/gEEoe4DwPif0Eb6W+R8NBAszBFb2z8mMtXZivQ0y5g5whGUBZXIVQhNQ=="],
 
     "@babel/runtime": ["@babel/runtime@7.26.7", "", { "dependencies": { "regenerator-runtime": "^0.14.0" } }, "sha512-AOPI3D+a8dXnja+iwsUqGRjr1BbZIe771sXdapOtYI531gSqpi92vXivKcq2asu/DFpdl1ceFAKZyRzK2PCVcQ=="],
 
