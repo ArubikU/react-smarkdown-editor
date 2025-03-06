@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server"
-import { supabase } from "../../../lib/supabase"
-import { v4 as uuidv4 } from "uuid"
+import { NextResponse } from "next/server";
+import { createMarkdown } from "../../../lib/db";
 
 export async function POST(request: Request) {
   const { content, title } = await request.json()
@@ -9,14 +8,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Content is required" }, { status: 400 })
   }
 
-  const id = uuidv4().replace(/-/g, "")
-
-  const { data, error } = await supabase.from("markdowns").insert({ id, content, title }).select()
-
+  const id = Array.from({ length: 32 }, () => Math.floor(Math.random() * 10)).join('');
+  const { data, error } = await createMarkdown(id, content, title);
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ id: data[0].id })
+  return NextResponse.json({ id: data.id })
 }
 

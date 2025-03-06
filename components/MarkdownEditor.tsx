@@ -1,12 +1,12 @@
 "use client"
 
 import { HighlighterProvider, SimpleMarkdown } from "@arubiku/react-markdown"
-import { ChevronDown, ChevronUp, Copy, Download, Globe2, Moon, Save, Share2, Sun, Upload } from "lucide-react"
+import { ChevronDown, ChevronUp, Copy, Download, Moon, Pen, Save, Sun, Upload } from "lucide-react"
 import Head from "next/head"
 import { useRouter } from "next/navigation"
 import type React from "react"
 import { useEffect, useState } from "react"
-import { compressToBase64, decompressFromBase64 } from "trapnz-lz-string"
+import { decompressFromBase64 } from "trapnz-lz-string"
 import { SimpleMarkdownWithDownload } from "./HandleDownload"
 import { useTheme } from "./ThemeProvider"
 import { Button } from "./ui/button"
@@ -96,17 +96,7 @@ export default function MarkdownEditor() {
 
   useEffect(() => {
     const pathname = window.location.pathname
-    if (pathname.startsWith("/render/")) {
-      const encodedContent = pathname.replace("/render/", "")
-      const decodedContent = decompressFromBase64(encodedContent)
-      setMarkdown(decodedContent || "")
-      setIsRenderOnly(true)
-    } else if(pathname.startsWith("/editor/")) {
-      const encodedContent = pathname.replace("/editor/", "")
-      const decodedContent = decompressFromBase64(encodedContent)
-      setMarkdown(decodedContent || "")
-      setIsRenderOnly(false)
-    }  else if (pathname.startsWith("/renderurl/")) {
+    if (pathname.startsWith("/renderurl/")) {
       const rawUrl = pathname.replace("/renderurl/", "")
       fetch(decodeURIComponent(rawUrl))
         .then((response) => response.text())
@@ -118,9 +108,9 @@ export default function MarkdownEditor() {
           setMarkdown("")
           setIsRenderOnly(true)
         })
-    } else if (pathname.startsWith("/m/")) {
-      const id = pathname.replace("/m/", "")
-      fetch(`/api/load-markdown/${id}`)
+    } else if (pathname.startsWith("/render/")) {
+      const id = pathname.replace("/render/", "")
+      fetch(`${window.location.origin}/api/load-markdown/${id}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.content) {
@@ -133,9 +123,9 @@ export default function MarkdownEditor() {
           setMarkdown("")
           setIsRenderOnly(true)
         })
-    } else if (pathname.startsWith("/md/")) {
-      const id = pathname.replace("/md/", "")
-      fetch(`/api/load-markdown/${id}`)
+    } else if (pathname.startsWith("/editor/")) {
+      const id = pathname.replace("/editor/", "")
+      fetch(`${window.location.origin}/api/load-markdown/${id}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.content) {
@@ -188,11 +178,21 @@ export default function MarkdownEditor() {
     }
   }
 
-  const handleShare = (renderOnly = false) => {
-    const encodedContent = compressToBase64(markdown)
-    const baseUrl = window.location.origin
-    const url = renderOnly ? `${baseUrl}/render/${encodedContent}` : `${baseUrl}/editor/${encodedContent}`
-    setShareUrl(url)
+  const handleEditor = async () => {
+    const response = await fetch(`${window.location.origin}/api/save-markdown`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: markdown, title, tags, previewImage }),
+    })
+
+    const data = await response.json()
+
+    if (data.id) {
+      const url = `${window.location.origin}/editor/${data.id}`
+      setShareUrl(url)
+    }
   }
 
   const handleCopyShareUrl = () => {
@@ -288,7 +288,7 @@ export default function MarkdownEditor() {
       }, 0)
     }
   const handleSave = async () => {
-    const response = await fetch("/api/save-markdown", {
+    const response = await fetch(`${window.location.origin}/api/save-markdown`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -299,7 +299,7 @@ export default function MarkdownEditor() {
     const data = await response.json()
 
     if (data.id) {
-      const url = `${window.location.origin}/m/${data.id}`
+      const url = `${window.location.origin}/render/${data.id}`
       setShareUrl(url)
     }
   }
@@ -307,7 +307,7 @@ export default function MarkdownEditor() {
   const handleLoad = async () => {
     const id = prompt("Enter the markdown ID:")
     if (id) {
-      const response = await fetch(`/api/load-markdown/${id}`)
+      const response = await fetch(`${window.location.origin}/api/load-markdown/${id}`)
       const data = await response.json()
 
       if (data.content) {
@@ -435,17 +435,20 @@ export default function MarkdownEditor() {
                 <Button onClick={() => document.getElementById("file-upload")?.click()}>
                   <Upload className="mr-2 h-4 w-4" /> Upload Markdown
                 </Button>
-                <Button onClick={() => handleShare()}>
-                  <Share2 className="mr-2 h-4 w-4" /> Share
+                <Button onClick={() => handleEditor()}>
+                  <Pen className="mr-2 h-4 w-4" /> Editor
                 </Button>
-                <Button onClick={() => handleShare(true)}>
-                  <Globe2 className="mr-2 h-4 w-4" /> Render share
-                </Button>
+                {
+                  
+                //<Button onClick={() => handleShare(true)}>
+                //<Globe2 className="mr-2 h-4 w-4" /> Render share
+                //</Button>
+                }
                 <Button onClick={handleSave}>
-                  <Save className="mr-2 h-4 w-4" /> Save to Cloud
+                  <Save className="mr-2 h-4 w-4" /> Share
                 </Button>
                 <Button onClick={handleLoad}>
-                  <Download className="mr-2 h-4 w-4" /> Load from Cloud
+                  <Download className="mr-2 h-4 w-4" /> Load
                 </Button>
               </div>
               {getExtra()}
