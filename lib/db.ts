@@ -53,3 +53,18 @@ export async function getMarkdown(id: string) {
     return { data: null, error: err instanceof Error ? err : new Error("Unknown error") };
   }
 }
+export async function getMarkdownTitle(id: string) {
+  try {
+    const response = await sql.unsafe(
+      'SELECT title FROM markdowns WHERE id::text = $1', [String(id)]
+    );
+    if(!response) {
+      return { data: null, error: new Error("Error fetching markdown") };
+    }
+    const data = response[0];
+
+    return { data, error: null };
+  } catch (err) {
+    return { data: null, error: err instanceof Error ? err : new Error("Unknown error") };
+  }
+}
